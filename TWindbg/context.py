@@ -14,8 +14,7 @@ MAX_DEREF = 20
 
 def init_arch():
     global ARCH, PTRMASK, PTRSIZE
-    cpu_mode = pykd.getCPUMode() 
-    if cpu_mode == pykd.CPUType.I386:
+    if (cpu_mode := pykd.getCPUMode()) == pykd.CPUType.I386:
         ARCH = 'x86'
         PTRMASK = 0xffffffff
         PTRSIZE = 4
@@ -77,8 +76,7 @@ class Context():
             
     def update_regs(self):
         for reg_name in self.regs_name + self.seg_regs_name:
-            reg_data = pykd.reg(reg_name)
-            if reg_data != self.regs[reg_name]: # is changed
+            if (reg_data := pykd.reg(reg_name)) != self.regs[reg_name]: # is changed
                 self.is_changed[reg_name] = True
             else:
                 self.is_changed[reg_name] = False
